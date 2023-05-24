@@ -58,17 +58,16 @@ exports.createEmployee = (req, res) => {
 exports.getAllEmployees = (req, res) => {
   // const employee = new Employee();
 
-  Employee.getAll((err, employeeId) => {
-    if (err) {
-      // If there was an error, delete the uploaded image
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
-      }
-      return res.status(500).json({ message: "Error creating employee" });
+  Employee.getAll((err, employee) => {
+    if (err){
+      return res.status(500).json({ message: "Error retrieving employees" });
+    }
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found' });
     }
     res
-      .status(201)
-      .json({ message: "Employee created successfully", employeeId });
+      .status(200)
+      .json({ message: "Employee created successfully", employee });
   });
 };
 
